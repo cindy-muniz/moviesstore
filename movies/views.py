@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Movie, Review
+from .models import Movie, Review, ReviewFlag
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 def index(request):
     search_term = request.GET.get('search')
@@ -16,7 +17,7 @@ def index(request):
 
 def show(request, id):
     movie = Movie.objects.get(id=id)
-    reviews = Review.objects.filter(movie=movie)
+    reviews = Review.objects.filter(movie=movie, is_removed=False)
 
     template_data = {}
     template_data['title'] = movie.name
@@ -60,4 +61,21 @@ def edit_review(request, id, review_id):
 def delete_review(request, id, review_id):
     review = get_object_or_404(Review, id=review_id, user=request.user)
     review.delete()
+    return redirect('movies.show', id=id)
+
+@login_required
+@require_POST
+def report_review(request, id, review_id):
+    review = get_object_or_404(Review, id=review_id, movie_id=id)
+
+    ReviewFlag.objects.get_or_create(
+        user=request.user,
+        review=review,
+        flag=ReviewFlag.SUGGEST_REMOVAL,
+    )
+
+    if not review.is_removed:
+        review.is_removed = True
+        review.save()
+    
     return redirect('movies.show', id=id)

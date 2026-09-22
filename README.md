@@ -2,7 +2,7 @@
 
 A full-stack Django web application for browsing, reviewing and purchasing movies. Users can create an account, search the catalog, leave and manage reviews, add movies to a session-based cart, and check out to create an order they can view in their order history.
 
-**Live demo:** [ADD YOUR PYTHONANYWHERE URL HERE]
+**Live demo:** (https://cindymuniz.pythonanywhere.com/)
 
 > **About this project:** Built as a semester project following *Django 5 for the Impatient, 2nd Edition* (Correa & Lim, Packt 2024), which covers the catalog, authentication, review CRUD, and the cart and order flow. I extended the book's application with a community review-moderation system of my own design — see [Extension: review moderation](#extension-review-moderation).
 
